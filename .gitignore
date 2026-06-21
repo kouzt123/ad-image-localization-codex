@@ -1,0 +1,17 @@
+.DS_Store
+*.log
+.env
+.env.*
+
+# Local output folders from image localization runs
+localized_output*/
+model_raw/
+qa_contact_sheet_*.jpg
+manifest.csv
+manifest.json
+
+# Python/editor cache
+__pycache__/
+.pytest_cache/
+.vscode/
+.idea/

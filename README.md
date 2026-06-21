@@ -1,16 +1,24 @@
-# Image Localization
+# Image Localization Codex Skill
 
-Image Localization is a Codex skill for turning source image creatives into localized, platform-ready ad and social assets.
+**Localize image creatives with Codex built-in image generation. No extra image API required.**
 
-It prioritizes Codex built-in vision, image generation, and image editing for native visual quality. Local code is used only for deterministic tasks such as resizing, cover-cropping, naming, manifests, and QA sheets.
+[中文说明](./README.zh-CN.md) · [Installation](./install.md) · [Skill](./SKILL.md) · [Contributors](./CONTRIBUTORS.md) · [License](./LICENSE)
 
-## Core Value
+Image Localization is a Codex skill for turning source image creatives into localized, platform-ready ad and social assets. It is designed for marketers, UA teams, ecommerce operators, and creators who need multilingual creative variants without setting up a separate image-generation API.
 
-This skill uses Codex's built-in image capabilities, so it can generate and localize images with your Codex subscription quota. It does not require extra image API setup, API keys, billing configuration, or a separate generation service.
+## Why This Skill
 
-The tradeoff is speed: the built-in Codex image workflow is slower than a dedicated batch image API. For marketing teams and operators, it is still a strong long-running workflow because the setup cost is low, the visual quality is native, and the per-task value is high.
+- **Uses your Codex subscription quota** for image generation and editing.
+- **No extra API setup**: no image API key, no separate billing account, no external generation service required.
+- **Native visual output**: relies on Codex built-in vision, image generation, and image editing instead of simple masking or mechanical text replacement.
+- **Campaign-ready workflow**: standardized filenames, manifests, common ad sizes, and visual QA before delivery.
+- **Good long-running value**: slower than a dedicated batch API, but low setup cost and strong output quality make it useful for marketing teams that can let jobs run in the background.
 
-Future work may include a separate high-throughput skill based on the Nano Banana API for faster bulk production.
+## Tradeoff
+
+The built-in Codex image workflow is slower than purpose-built bulk image APIs. This skill is optimized for convenience, native visual quality, and low setup cost rather than maximum throughput.
+
+Future work may include a separate high-throughput skill based on the Nano Banana API for faster batch production.
 
 ## What It Does
 
@@ -24,19 +32,49 @@ Future work may include a separate high-throughput skill based on the Nano Banan
   - `1200x628`
 - Handles special resolutions by generating the closest safe aspect ratio, then applying deterministic cover-crop when appropriate.
 - Maintains brand/product terminology memory.
-- Produces clean, upload-ready filenames and manifests.
-- Runs visual QA before delivery.
+- Produces clean upload-ready filenames and manifests.
+- Runs visual QA before delivery, with one regeneration pass for failed outputs.
 
-## Design Philosophy
+## Installation
 
-The goal is native-looking localized creative, not simple masking or mechanical text replacement.
+Install directly into your Codex skills directory:
 
-The skill follows this split:
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+git clone https://github.com/kouzt123/image-localization-Codex \
+  "${CODEX_HOME:-$HOME/.codex}/skills/image-localization"
+```
 
-- Model work: recognition, translation, image editing, layout reflow, canvas extension, visual repair.
-- Code work: exact resize, cover-crop, file naming, manifests, contact sheets, dimension checks.
+If you prefer to clone elsewhere, symlink the whole repo:
 
-Blurred padding is not used as a default delivery strategy.
+```bash
+git clone https://github.com/kouzt123/image-localization-Codex ~/Developer/image-localization-Codex
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+ln -sfn ~/Developer/image-localization-Codex \
+  "${CODEX_HOME:-$HOME/.codex}/skills/image-localization"
+```
+
+Restart Codex or refresh skills if your environment requires it.
+
+See [install.md](./install.md) for manual setup and update notes.
+
+## Usage
+
+In Codex, ask for the skill explicitly:
+
+```text
+Use image-localization to translate this game ad into German, French, Spanish, Japanese, and Korean. Export 1200x1200, 1920x1080, 1080x1350, 1080x1920, and 1200x628.
+```
+
+Other examples:
+
+```text
+Localize this poster into Arabic and Vietnamese. Preserve the product name in English and make sure the 1200x628 output does not stretch the text.
+```
+
+```text
+Remember that "Codex" should not be translated for OpenAI assets.
+```
 
 ## Size Handling
 
@@ -69,36 +107,26 @@ The skill supports a JSON memory file for user-approved terminology:
 
 Brand-level rules apply across products. Product-level rules can override brand rules.
 
-## Example Prompts
+## Repository Structure
 
 ```text
-Use image-localization to translate this game ad into German, French, Spanish, Japanese, and Korean. Export 1200x1200, 1920x1080, 1080x1350, 1080x1920, and 1200x628.
-```
-
-```text
-Localize this poster into Arabic and Vietnamese. Preserve the product name in English and make sure the 1200x628 output does not stretch the text.
-```
-
-```text
-Remember that "Codex" should not be translated for OpenAI assets.
-```
-
-## File Structure
-
-```text
-image-localization/
+image-localization-Codex/
 ├── SKILL.md
 ├── README.md
 ├── README.zh-CN.md
+├── install.md
+├── CONTRIBUTORS.md
+├── LICENSE
 ├── brand_term_memory.json
 └── agents/
     └── openai.yaml
 ```
 
-## Author
+## Contributors
 
-GitHub: [kouzt123](https://github.com/kouzt123)
+- [kouzt123](https://github.com/kouzt123) — creator and maintainer
+- Codex — AI collaborator for skill design, documentation, and implementation support
 
 ## License
 
-Add your preferred license before publishing.
+MIT. See [LICENSE](./LICENSE).
