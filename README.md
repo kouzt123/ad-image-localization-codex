@@ -6,6 +6,8 @@
 
 Image Localization is a Codex skill for turning source image creatives into localized, platform-ready ad and social assets. It is designed for marketers, UA teams, ecommerce operators, and creators who need multilingual creative variants without setting up a separate image-generation API.
 
+![Fictional ad localization demos](./examples/demo-localization-grid.png)
+
 ## Why This Skill
 
 - **Uses your Codex subscription quota** for image generation and editing.
@@ -19,16 +21,6 @@ Image Localization is a Codex skill for turning source image creatives into loca
 The built-in Codex image workflow is slower than purpose-built bulk image APIs. This skill is optimized for convenience, native visual quality, and low setup cost rather than maximum throughput.
 
 Future work may include a separate high-throughput skill based on the Nano Banana API for faster batch production.
-
-## Codex Co-Author Attribution
-
-This repository includes a local Git hook that can append the GitHub-recognized trailer:
-
-```text
-Co-authored-by: codex <codex@openai.com>
-```
-
-Run `./scripts/setup-codex-attribution.sh` after cloning if you want future commits in your local copy to include the same attribution.
 
 ## What It Does
 
@@ -44,6 +36,18 @@ Run `./scripts/setup-codex-attribution.sh` after cloning if you want future comm
 - Maintains brand/product terminology memory.
 - Produces clean upload-ready filenames and manifests.
 - Runs visual QA before delivery, with one regeneration pass for failed outputs.
+
+![Organized output folder demo](./examples/organized-output-folder.png)
+
+## Positioning
+
+This project is best described as an **Ad Creative Localization Skill for Codex**, not a general image translation tool.
+
+| Nearby project/category | What it is good at | How this skill is different |
+| --- | --- | --- |
+| [OpenAI Codex imagegen sample skill](https://github.com/openai/codex/blob/main/codex-rs/skills/src/assets/samples/imagegen/SKILL.md) | General image generation/editing patterns, including text localization as one taxonomy | This skill wraps those capabilities into a marketing/UA delivery workflow. |
+| [manga-image-translator](https://github.com/zyddnys/manga-image-translator), [BallonsTranslator](https://github.com/dmMaze/BallonsTranslator), [Koharu](https://github.com/mayocream/koharu) | Mature OCR, inpainting, and translation workflows for manga/comics | This skill targets ad creatives, ecommerce images, social banners, platform sizes, brand terms, manifests, and QA. |
+| General OCR/inpainting translation pipelines | Text detection, removal, translation, and rendering | This skill is agent-native: Codex reasons about the creative, generates model-native variants, organizes outputs, and checks the batch before delivery. |
 
 ## Installation
 
@@ -86,6 +90,32 @@ Localize this poster into Arabic and Vietnamese. Preserve the product name in En
 Remember that "Codex" should not be translated for OpenAI assets.
 ```
 
+## Prompt Cookbook
+
+### Game Ad
+
+```text
+Use image-localization to localize this game ad into German, Spanish, Japanese, and Arabic. Preserve the game title, translate all character traits and UI labels, and export 1200x1200, 1920x1080, 1080x1350, 1080x1920, and 1200x628.
+```
+
+### Ecommerce Product Image
+
+```text
+Use image-localization to create French and Portuguese versions of this product banner. Keep the brand name unchanged, localize the offer text, and output Meta feed, story, and 1200x628 link-ad sizes.
+```
+
+### SaaS Banner
+
+```text
+Use image-localization to localize this SaaS launch banner into Japanese and Korean. Keep product UI readable, preserve the logo, and generate 16:9 plus 1200x628 with safe margins.
+```
+
+### App Store / Social Screenshot
+
+```text
+Use image-localization to turn these app screenshots into Indonesian and Vietnamese campaign creatives. Translate visible marketing copy, keep UI labels natural, and export upload-ready filenames with manifest.json.
+```
+
 ## Size Handling
 
 For special sizes such as `1200x628`, the recommended workflow is:
@@ -126,9 +156,7 @@ image-localization-Codex/
 ├── README.zh-CN.md
 ├── install.md
 ├── LICENSE
-├── .githooks/
-├── .gitmessage
-├── scripts/
+├── examples/
 ├── brand_term_memory.json
 └── agents/
     └── openai.yaml

@@ -54,7 +54,6 @@ git pull --ff-only
 - No external image API key is required.
 - Image generation uses Codex built-in image capabilities and your Codex subscription quota.
 - Optional terminology memory lives in `brand_term_memory.json` or a project-local `.image-localization/brand_term_memory.json`.
-- Run `./scripts/setup-codex-attribution.sh` if you want future local commits to include `Co-authored-by: codex <codex@openai.com>`.
 
 # 中文安装说明
 
@@ -110,4 +109,3 @@ git pull --ff-only
 - 不需要额外图片 API Key。
 - 图像生成使用 Codex 内置图像能力和你的 Codex 订阅额度。
 - 可选术语记忆文件为 `brand_term_memory.json`，也可以使用项目内的 `.image-localization/brand_term_memory.json`。
-- 如果你希望本地后续提交包含 `Co-authored-by: codex <codex@openai.com>`，运行 `./scripts/setup-codex-attribution.sh`。
