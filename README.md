@@ -20,6 +20,16 @@ The built-in Codex image workflow is slower than purpose-built bulk image APIs. 
 
 Future work may include a separate high-throughput skill based on the Nano Banana API for faster batch production.
 
+## Codex Co-Author Attribution
+
+This repository includes a local Git hook that can append the GitHub-recognized trailer:
+
+```text
+Co-authored-by: codex <codex@openai.com>
+```
+
+Run `./scripts/setup-codex-attribution.sh` after cloning if you want future commits in your local copy to include the same attribution.
+
 ## What It Does
 
 - Translates visible text inside images into target languages.
@@ -116,6 +126,9 @@ image-localization-Codex/
 ├── README.zh-CN.md
 ├── install.md
 ├── LICENSE
+├── .githooks/
+├── .gitmessage
+├── scripts/
 ├── brand_term_memory.json
 └── agents/
     └── openai.yaml
