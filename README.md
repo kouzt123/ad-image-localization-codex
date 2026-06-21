@@ -2,7 +2,7 @@
 
 **Localize image creatives with Codex built-in image generation. No extra image API required.**
 
-[中文说明](./README.zh-CN.md) · [Installation](./install.md) · [Skill](./SKILL.md) · [Contributors](./CONTRIBUTORS.md) · [License](./LICENSE)
+[中文说明](./README.zh-CN.md) · [Installation](./install.md) · [Skill](./SKILL.md) · [License](./LICENSE)
 
 Image Localization is a Codex skill for turning source image creatives into localized, platform-ready ad and social assets. It is designed for marketers, UA teams, ecommerce operators, and creators who need multilingual creative variants without setting up a separate image-generation API.
 
@@ -115,17 +115,11 @@ image-localization-Codex/
 ├── README.md
 ├── README.zh-CN.md
 ├── install.md
-├── CONTRIBUTORS.md
 ├── LICENSE
 ├── brand_term_memory.json
 └── agents/
     └── openai.yaml
 ```
-
-## Contributors
-
-- [kouzt123](https://github.com/kouzt123) — creator and maintainer
-- Codex — AI collaborator for skill design, documentation, and implementation support
 
 ## License
 

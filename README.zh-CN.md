@@ -2,7 +2,7 @@
 
 **使用 Codex 内置图像生成能力进行图片本地化，不需要额外图片 API。**
 
-[English](./README.md) · [安装说明](./install.md) · [Skill 文件](./SKILL.md) · [贡献者](./CONTRIBUTORS.md) · [许可证](./LICENSE)
+[English](./README.md) · [安装说明](./install.md) · [Skill 文件](./SKILL.md) · [许可证](./LICENSE)
 
 Image Localization 是一个 Codex Skill，用于把源图片素材处理成可直接投放的多语言广告和社交平台素材。它适合市场、投放、运营、电商和创作者，用来批量生成多语言、多尺寸创意。
 
@@ -115,17 +115,11 @@ image-localization-Codex/
 ├── README.md
 ├── README.zh-CN.md
 ├── install.md
-├── CONTRIBUTORS.md
 ├── LICENSE
 ├── brand_term_memory.json
 └── agents/
     └── openai.yaml
 ```
-
-## 贡献者
-
-- [kouzt123](https://github.com/kouzt123) — 创建者和维护者
-- Codex — Skill 设计、文档和实现协作
 
 ## 许可证
 
