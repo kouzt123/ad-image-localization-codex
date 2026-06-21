@@ -1,0 +1,143 @@
+---
+name: image-localization
+description: Localize and prepare image creatives for ads, social posts, ecommerce, and campaign delivery. Use when Codex needs to adapt images into platform-specific dimensions, translate text inside images, preserve native visual quality, apply brand terminology rules, export standardized filenames, and visually QA generated batches. Prefer Codex built-in vision, image generation, and image editing; use local scripts only for deterministic resizing, cropping, naming, manifests, and QA sheets.
+---
+
+# Image Localization
+
+## Purpose
+
+Use this skill to turn source image creatives into localized, platform-ready assets. The priority is native visual quality: use Codex built-in vision and image generation/editing for recognition, translation, layout reflow, canvas extension, and visual repair. Use code only for deterministic file operations.
+
+## Core Principles
+
+- Inspect the source image before generating variants.
+- Translate all visible user-facing text unless it is a brand/product term that should be preserved.
+- Preserve logos, products, characters, UI hierarchy, legibility, and crop-safe zones.
+- Prefer model-native aspect-ratio generation over local design reconstruction.
+- Use deterministic scripts only for exact resize, cover-crop, naming, manifest generation, and contact-sheet QA.
+- Never use blurred padding as the default delivery method.
+- QA every deliverable before presenting the batch.
+
+## Typical Capabilities
+
+- Generate localized versions for one or more target languages.
+- Adapt one creative into common ad/social sizes such as `1200x1200`, `1920x1080`, `1080x1350`, `1080x1920`, and `1200x628`.
+- Handle special resolutions by generating the closest safe model-native ratio, then applying deterministic cover-crop when appropriate.
+- Maintain brand/product terminology memory across tasks.
+- Export clean filenames and manifests for upload-ready batches.
+- Regenerate failed outputs once, then report any remaining issues.
+
+## Workflow
+
+1. **Recognize the source**
+   - Identify visible text, language, subject, brand/product signals, logo, CTA, layout, important edges, and crop risks.
+   - For batches, inspect each distinct source image at least once.
+
+2. **Build a job spec**
+   - Track source image, brand, product, target languages, target dimensions, output directory, naming slug, protected terms, and QA notes.
+   - Keep brand-level terminology separate from product-level terminology.
+
+3. **Check terminology memory**
+   - Read `$CODEX_HOME/skills/image-localization/brand_term_memory.json` when available.
+   - If the workspace has `.image-localization/brand_term_memory.json`, prefer it for project-local rules.
+   - Persist only user-approved rules, such as "translate X as Y" or "do not translate X".
+   - If the current image appears to belong to a different brand/product family than the last task, warn the user and suggest starting a separate task/output folder before applying remembered terms.
+
+4. **Generate model-native variants**
+   - Use Codex built-in image generation/editing for translation, text replacement, layout reflow, and canvas extension.
+   - For each language, prefer generating a strong anchor version first, then use it as the visual reference for the same language's other sizes.
+   - For `16:9` sources that will feed `1200x628`, ask the model to keep important content away from the top/bottom edge.
+
+5. **Post-process deterministically**
+   - Use exact resize when the raw model output already matches the target aspect ratio.
+   - Use cover-crop when the target ratio is close to a generated common ratio and the model output has safe margins.
+   - Use model-generated canvas extension or reflow instead of blur padding when crop would remove important content.
+
+6. **Export**
+   - Default filename pattern:
+     `<creative-name>_<language-or-locale>_<width>x<height>_<yyyymmdd>.<ext>`
+   - Use lowercase English slugs for creative names.
+   - Keep source files untouched.
+   - Write a manifest when producing batches.
+
+7. **QA**
+   - Check dimensions, language, readability, crop safety, missing objects, malformed text, visual artifacts, and brand/product preservation.
+   - If an output fails, regenerate or re-edit once.
+   - If the second attempt still fails, deliver the best available output only with a clear warning.
+
+## Size Adaptation Rules
+
+Use this priority order:
+
+1. **Generate the requested aspect ratio natively** when text, products, faces, logos, or UI are near edges.
+2. **Generate the closest common ratio with safe margins, then cover-crop** when the target is close to a standard format.
+3. **Use model-based canvas extension or layout reflow** when crop would damage important content.
+4. **Use non-uniform resize only when explicitly requested or when distortion is visually negligible.**
+
+Deterministic cover-crop:
+
+```text
+scale = max(target_width / source_width, target_height / source_height)
+resized_width = round(source_width * scale)
+resized_height = round(source_height * scale)
+crop_left = (resized_width - target_width) // 2
+crop_top = (resized_height - target_height) // 2
+```
+
+Example: `1920x1080` to `1200x628`
+
+- Resize proportionally by width to `1200x675`.
+- Crop `47` vertical pixels total.
+- Default crop removes about `23` px from the top and `24` px from the bottom.
+- If QA shows edge risk, regenerate the `16:9` image with stronger safe-margin instructions or shift the crop toward empty space.
+
+## Terminology Memory
+
+Recommended memory file:
+
+```json
+{
+  "version": 1,
+  "brands": {
+    "openai": {
+      "display_name": "OpenAI",
+      "rules": [
+        {"term": "OpenAI", "action": "preserve", "notes": "Brand name"}
+      ],
+      "products": {
+        "codex": {
+          "display_name": "Codex",
+          "rules": [
+            {"term": "Codex", "action": "preserve", "notes": "Product name"}
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
+Brand rules apply to all products under the brand. Product rules override brand rules for that product.
+
+## Default Sizes
+
+- `1200x1200` square ad
+- `1920x1080` landscape / 16:9
+- `1080x1350` portrait feed / 4:5
+- `1080x1920` story / 9:16
+- `1200x628` social link/feed ad
+
+## Usage Examples
+
+- "Localize this game ad into German, French, Spanish, Japanese, and Korean, then export the common ad sizes."
+- "把这张图里的所有文字翻译成葡萄牙语，品牌名不要翻译，输出 `1200x1200`、`1080x1920` 和 `1200x628`。"
+- "Generate `1200x628` from the 16:9 version with safe cropping. Do not stretch the image."
+- "Remember that this product name should stay in English for this brand."
+
+## Limitations
+
+- Built-in image generation can still distort small text, logos, hands, faces, or dense UI.
+- Exact font matching is best-effort unless editable source files or fonts are provided.
+- Large batches should be processed in smaller groups so QA remains reliable.
+- Codex built-in image generation currently has no stable user-controlled concurrency setting; prefer correctness over speed.
