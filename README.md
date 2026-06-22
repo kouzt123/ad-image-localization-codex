@@ -102,9 +102,9 @@ python -m unittest discover -s tests
 
 ## Installation
 
-### Install With Codex
+### Recommended Install
 
-For non-technical users, copy this prompt into Codex:
+Recommended: ask Codex to install it for you.
 
 ```text
 Help me install this Codex skill: https://github.com/kouzt123/ad-image-localization-codex

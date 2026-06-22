@@ -104,7 +104,7 @@ python -m unittest discover -s tests
 
 ### 让 Codex 帮你安装
 
-非技术用户可以直接把下面这段话复制到 Codex：
+推荐方式：让 Codex 帮你安装。
 
 ```text
 帮我安装这个 Codex skill：https://github.com/kouzt123/ad-image-localization-codex

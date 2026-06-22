@@ -6,7 +6,7 @@
 
 ### Easiest Option
 
-Copy this prompt into Codex:
+Recommended: ask Codex to install it for you.
 
 ```text
 Help me install this Codex skill: https://github.com/kouzt123/ad-image-localization-codex
@@ -81,7 +81,7 @@ git pull --ff-only
 
 ### 最简单的方式
 
-把下面这段话复制到 Codex：
+推荐方式：让 Codex 帮你安装。
 
 ```text
 帮我安装这个 Codex skill：https://github.com/kouzt123/ad-image-localization-codex
