@@ -153,8 +153,10 @@ For Arabic, RTL-aware localization is attempted by default; if QA finds the adap
 
 During QA, run Culture-Aware QA for the target markets. If a localized variant may need local review, move its affected sizes into `Flagged by Culture-Aware QA/` and tell me why.
 
+To teach terminology memory, describe the brand or product scope:
+
 ```text
-Remember that "Codex" should not be translated for OpenAI assets.
+Remember this terminology rule for Example Brand: keep "PixelPass" in English for all localized assets.
 ```
 
 ## Prompt Cookbook

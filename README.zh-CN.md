@@ -153,8 +153,10 @@ ln -sfn ~/Developer/ad-image-localization-codex \
 
 QA 阶段请同时执行 Culture-Aware QA。如果某个本地化变体可能需要目标市场复核，请把受影响尺寸移入 `Flagged by Culture-Aware QA/`，并说明原因。
 
+如果要维护术语记忆，请说明品牌或产品范围：
+
 ```text
-记住 OpenAI 相关素材里，Codex 不需要翻译。
+记住这个术语规则：Example Brand 的素材里，PixelPass 保持英文，不要翻译。
 ```
 
 ## Prompt Cookbook
