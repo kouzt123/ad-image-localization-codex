@@ -55,6 +55,8 @@ For Arabic and other RTL languages, the skill first attempts RTL-aware layout ad
 
 For Arabic and other right-to-left languages, the skill uses a quality-first fallback strategy: try RTL-aware localization first, then fall back to copy-only localization when the adapted layout is less natural, less readable, or less brand-safe.
 
+![RTL-aware localization QA fallback demo](./examples/rtl-aware-localization.png)
+
 - **Option A: RTL-aware enabled (default for RTL languages)**: adapts layout for right-to-left reading when beneficial, including text direction, alignment, CTA flow, local text grouping, and limited UI or dialogue layout adjustments.
 - **Option B: RTL-aware disabled / fallback**: translates visible copy only and preserves the original layout structure when layout adaptation reduces quality.
 
