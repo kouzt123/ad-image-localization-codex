@@ -5,7 +5,9 @@
 .demo_*_marker
 
 # Local output folders from image localization runs
+ad-localization-runs/
 localized_output*/
+localized_output*.zip
 model_raw/
 qa_contact_sheet*.jpg
 manifest.csv

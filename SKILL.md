@@ -48,6 +48,8 @@ Use this skill to turn source image creatives into localized, platform-ready ass
 
 3. **Build a job spec**
    - Track source image, brand, product, target languages, target dimensions, output directory, naming slug, protected terms, localization mode, and QA notes.
+   - Create or choose one run folder before generating files. If the user does not provide an output path, use `ad-localization-runs/<creative-slug>_<yyyymmdd_hhmm>/`.
+   - Keep each task's source, final outputs, QA artifacts, flagged files, and intermediate work inside that run folder. Do not scatter generated images, temporary scripts, zip files, or QA files in the repo/workspace root.
    - Keep brand-level terminology separate from product-level terminology.
    - For RTL target languages, set localization mode to `rtl-aware` by default unless the user explicitly requests copy-only layout preservation.
 
@@ -79,13 +81,29 @@ Use this skill to turn source image creatives into localized, platform-ready ass
      `python scripts/ad_image_localization_tools.py cover-crop <input> <output> --size 1200x628`.
 
 7. **Export**
+   - Default run folder structure:
+     ```text
+     ad-localization-runs/<creative-slug>_<yyyymmdd_hhmm>/
+     ├── source/
+     ├── final/
+     ├── qa/
+     ├── work/
+     │   ├── imagegen_raw/
+     │   └── derivative_crops/
+     └── Flagged by Culture-Aware QA/
+     ```
+   - Put only upload-ready deliverables in `final/`.
+   - Put the original source copy in `source/`.
+   - Put model raw outputs, experiments, temporary scripts, and deterministic crop intermediates in `work/`.
+   - Put `manifest.json`, `qa_contact_sheet`, QA notes, and logs in `qa/`.
+   - Put flagged market-risk files in `Flagged by Culture-Aware QA/`, not mixed with ready-to-upload outputs.
    - Default filename pattern:
      `<creative-name>_<language-or-locale>_<width>x<height>_<yyyymmdd>.<ext>`
    - Use lowercase English slugs for creative names.
    - Keep source files untouched.
    - Write a manifest when producing batches.
-   - For batch folders, use the helper to write manifests:
-     `python scripts/ad_image_localization_tools.py manifest <output-folder>`.
+   - For batch folders, run helper commands against `final/` and write QA artifacts into `qa/`:
+     `python scripts/ad_image_localization_tools.py manifest <run-folder>/final --output <run-folder>/qa/manifest.json`.
 
 8. **QA**
    - Check dimensions, language, readability, crop safety, missing objects, malformed text, visual artifacts, and brand/product preservation.
@@ -96,7 +114,7 @@ Use this skill to turn source image creatives into localized, platform-ready ass
    - Run Culture-Aware QA for each target language/market:
      - Look for plausible market-specific concerns in localized imagery, copy, symbols, maps, borders, gestures, clothing, religious references, food/animals, political context, regulated categories, social norms, and legal or platform sensitivities.
      - Use common knowledge, not a rigid blacklist. If the risk depends on current law, politics, platform rules, or a specific target market and you are uncertain, search the web and cite the source in the final notes.
-     - If a creative has a reasonable risk, do not rewrite it by default. Move that creative's affected sizes into `Flagged by Culture-Aware QA/` inside the project output folder and tell the user to review or modify before launch.
+     - If a creative has a reasonable risk, do not rewrite it by default. Move that creative's affected sizes into the run folder's `Flagged by Culture-Aware QA/` folder and tell the user to review or modify before launch.
      - If only one size reveals the issue because of cropping or layout, flag that size; if the issue is inherent to the creative/language/market, flag all sizes for that creative variant.
    - Use `verify` for filename/dimension checks and `contact-sheet` to create a visual QA sheet before final review.
    - If an output fails, regenerate or re-edit once.
@@ -126,11 +144,12 @@ Use RTL-aware adaptation as a reading-flow improvement, not as a blanket mirror 
 Use `scripts/ad_image_localization_tools.py` only for deterministic last-mile work after `imagegen` has produced the image assets. It does not call image APIs and does not replace `imagegen` or Codex built-in image generation. In particular, do not use the helper to create primary ad-size variants that should be model-native.
 
 ```bash
-python scripts/ad_image_localization_tools.py cover-crop in.png out.jpg --size 1200x628
-python scripts/ad_image_localization_tools.py manifest localized_output/
-python scripts/ad_image_localization_tools.py verify localized_output/
-python scripts/ad_image_localization_tools.py contact-sheet localized_output/ qa_contact_sheet.jpg
-python scripts/ad_image_localization_tools.py flag-culture-aware localized_output/ rabbit-social-networks_ar_1200x628_20260622.jpg --market "GCC" --reason "Animal/food symbolism may need local review"
+RUN=ad-localization-runs/rabbit-social-networks_20260623_1430
+python scripts/ad_image_localization_tools.py cover-crop "$RUN/work/imagegen_raw/input_16x9.png" "$RUN/final/rabbit-social-networks_en_1200x628_20260623.jpg" --size 1200x628
+python scripts/ad_image_localization_tools.py manifest "$RUN/final" --output "$RUN/qa/manifest.json"
+python scripts/ad_image_localization_tools.py verify "$RUN/final"
+python scripts/ad_image_localization_tools.py contact-sheet "$RUN/final" "$RUN/qa/qa_contact_sheet.jpg"
+python scripts/ad_image_localization_tools.py flag-culture-aware "$RUN/final" rabbit-social-networks_ar_1200x628_20260623.jpg --destination "../Flagged by Culture-Aware QA" --market "GCC" --reason "Animal/food symbolism may need local review"
 python scripts/ad_image_localization_tools.py memory-add brand_term_memory.json --brand openai --term Codex --action preserve
 ```
 

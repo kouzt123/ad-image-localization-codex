@@ -43,6 +43,31 @@ Future work may include a separate high-throughput skill based on the Nano Banan
 
 ![Organized output folder demo](./examples/organized-output-folder.png)
 
+## Output Folder Structure
+
+Each task should live in its own run folder. Keep the workspace root clean and avoid mixing source images, raw model outputs, scripts, QA files, zips, and final deliverables in one flat folder.
+
+```text
+ad-localization-runs/
+└── rabbit-social-networks_20260623_1430/
+    ├── source/
+    ├── final/
+    ├── qa/
+    │   ├── manifest.json
+    │   ├── qa_contact_sheet.jpg
+    │   └── qa_notes.md
+    ├── work/
+    │   ├── imagegen_raw/
+    │   └── derivative_crops/
+    └── Flagged by Culture-Aware QA/
+```
+
+- `final/`: upload-ready assets only.
+- `qa/`: manifest, contact sheet, QA notes, and logs.
+- `work/`: model raw outputs, experiments, temporary scripts, and deterministic crop intermediates.
+- `source/`: a copy of the original input image for traceability.
+- `Flagged by Culture-Aware QA/`: files that need local review before launch.
+
 ## How It Is Different
 
 This is not a general image translation tool.
@@ -83,12 +108,13 @@ The user should review those files before launch or ask Codex to create a safer 
 The bundled Python helper handles deterministic last-mile work after model-native output exists. It does **not** call an image API and does not replace Codex `imagegen` or built-in image generation.
 
 ```bash
+RUN=ad-localization-runs/rabbit-social-networks_20260623_1430
 python -m pip install -r requirements.txt
-python scripts/ad_image_localization_tools.py cover-crop input.png output.jpg --size 1200x628
-python scripts/ad_image_localization_tools.py manifest localized_output/
-python scripts/ad_image_localization_tools.py verify localized_output/
-python scripts/ad_image_localization_tools.py contact-sheet localized_output/ qa_contact_sheet.jpg
-python scripts/ad_image_localization_tools.py flag-culture-aware localized_output/ rabbit-social-networks_ar_1200x628_20260622.jpg --market "GCC" --reason "Needs local cultural review"
+python scripts/ad_image_localization_tools.py cover-crop "$RUN/work/imagegen_raw/input_16x9.png" "$RUN/final/rabbit-social-networks_en_1200x628_20260623.jpg" --size 1200x628
+python scripts/ad_image_localization_tools.py manifest "$RUN/final" --output "$RUN/qa/manifest.json"
+python scripts/ad_image_localization_tools.py verify "$RUN/final"
+python scripts/ad_image_localization_tools.py contact-sheet "$RUN/final" "$RUN/qa/qa_contact_sheet.jpg"
+python scripts/ad_image_localization_tools.py flag-culture-aware "$RUN/final" rabbit-social-networks_ar_1200x628_20260623.jpg --destination "../Flagged by Culture-Aware QA" --market "GCC" --reason "Needs local cultural review"
 python scripts/ad_image_localization_tools.py memory-add brand_term_memory.json --brand openai --term Codex --action preserve
 ```
 
@@ -246,6 +272,8 @@ ad-image-localization-codex/
 └── agents/
     └── openai.yaml
 ```
+
+Runtime outputs are intentionally ignored by Git under `ad-localization-runs/`.
 
 ## License
 
