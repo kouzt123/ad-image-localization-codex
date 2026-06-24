@@ -49,8 +49,8 @@ To test the local helper script:
 
 ```bash
 cd "${CODEX_HOME:-$HOME/.codex}/skills/ad-image-localization"
-python -m pip install -r requirements.txt
-python -m unittest discover -s tests
+python3 -m pip install -r requirements.txt
+python3 -m unittest discover -s tests
 ```
 
 ## Update
@@ -124,8 +124,8 @@ ln -sfn ~/Developer/ad-image-localization-codex \
 
 ```bash
 cd "${CODEX_HOME:-$HOME/.codex}/skills/ad-image-localization"
-python -m pip install -r requirements.txt
-python -m unittest discover -s tests
+python3 -m pip install -r requirements.txt
+python3 -m unittest discover -s tests
 ```
 
 ## 更新

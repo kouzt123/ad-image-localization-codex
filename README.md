@@ -111,23 +111,23 @@ The bundled Python helper handles deterministic last-mile work after model-nativ
 
 ```bash
 RUN=ad-localization-runs/rabbit-social-networks_20260623_1430
-python -m pip install -r requirements.txt
-python scripts/ad_image_localization_tools.py cover-crop "$RUN/work/imagegen_raw/input_16x9.png" "$RUN/final/rabbit-social-networks_en_1200x628_20260623.jpg" --size 1200x628
-python scripts/ad_image_localization_tools.py manifest "$RUN/final" --output "$RUN/qa/manifest.json"
-python scripts/ad_image_localization_tools.py verify "$RUN/final"
-python scripts/ad_image_localization_tools.py contact-sheet "$RUN/final" "$RUN/qa/qa_contact_sheet.jpg"
-python scripts/ad_image_localization_tools.py flag-culture-aware "$RUN/final" rabbit-social-networks_ar_1200x628_20260623.jpg --destination "../Flagged by Culture-Aware QA" --market "GCC" --reason "Needs local cultural review"
-python scripts/ad_image_localization_tools.py memory-add brand_term_memory.json --brand openai --term Codex --action preserve
+python3 -m pip install -r requirements.txt
+python3 scripts/ad_image_localization_tools.py cover-crop "$RUN/work/imagegen_raw/input_16x9.png" "$RUN/final/rabbit-social-networks_en_1200x628_20260623.jpg" --size 1200x628
+python3 scripts/ad_image_localization_tools.py manifest "$RUN/final" --output "$RUN/qa/manifest.json"
+python3 scripts/ad_image_localization_tools.py verify "$RUN/final"
+python3 scripts/ad_image_localization_tools.py contact-sheet "$RUN/final" "$RUN/qa/qa_contact_sheet.jpg"
+python3 scripts/ad_image_localization_tools.py flag-culture-aware "$RUN/final" rabbit-social-networks_ar_1200x628_20260623.jpg --destination "../Flagged by Culture-Aware QA" --market "GCC" --reason "Needs local cultural review"
+python3 scripts/ad_image_localization_tools.py memory-add brand_term_memory.json --brand openai --term Codex --action preserve
 ```
 
-Use it after model-native generation for repeatable safe derivative cropping, upload-ready manifests, filename/dimension checks, visual QA sheets, Culture-Aware QA flagging, and brand/product terminology memory. Do not use the helper to create the primary `1:1`, `16:9`, `4:5`, or `9:16` variants; those should be generated with `imagegen`. The helper uses Pillow; install it with `python -m pip install -r requirements.txt` when running outside Codex bundled Python environments.
+Use it after model-native generation for repeatable safe derivative cropping, upload-ready manifests, filename/dimension checks, visual QA sheets, Culture-Aware QA flagging, and brand/product terminology memory. Do not use the helper to create the primary `1:1`, `16:9`, `4:5`, or `9:16` variants; those should be generated with `imagegen`. The helper uses Pillow; install it with `python3 -m pip install -r requirements.txt` when running outside Codex bundled Python environments.
 
 Local helper tests:
 
 ```bash
-python -m pip install -r requirements.txt
-python -m unittest discover -s tests
-python scripts/ad_image_localization_tools.py verify examples/verified-delivery-pack
+python3 -m pip install -r requirements.txt
+python3 -m unittest discover -s tests
+python3 scripts/ad_image_localization_tools.py verify examples/verified-delivery-pack
 ```
 
 ## Installation
@@ -232,7 +232,7 @@ This preserves geometry and avoids non-uniform stretching.
 The helper script exposes this as a reusable command:
 
 ```bash
-python scripts/ad_image_localization_tools.py cover-crop 1920x1080.png 1200x628.jpg --size 1200x628
+python3 scripts/ad_image_localization_tools.py cover-crop 1920x1080.png 1200x628.jpg --size 1200x628
 ```
 
 ## Terminology Memory

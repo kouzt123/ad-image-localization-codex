@@ -111,23 +111,23 @@ Flagged by Culture-Aware QA/
 
 ```bash
 RUN=ad-localization-runs/rabbit-social-networks_20260623_1430
-python -m pip install -r requirements.txt
-python scripts/ad_image_localization_tools.py cover-crop "$RUN/work/imagegen_raw/input_16x9.png" "$RUN/final/rabbit-social-networks_en_1200x628_20260623.jpg" --size 1200x628
-python scripts/ad_image_localization_tools.py manifest "$RUN/final" --output "$RUN/qa/manifest.json"
-python scripts/ad_image_localization_tools.py verify "$RUN/final"
-python scripts/ad_image_localization_tools.py contact-sheet "$RUN/final" "$RUN/qa/qa_contact_sheet.jpg"
-python scripts/ad_image_localization_tools.py flag-culture-aware "$RUN/final" rabbit-social-networks_ar_1200x628_20260623.jpg --destination "../Flagged by Culture-Aware QA" --market "GCC" --reason "Needs local cultural review"
-python scripts/ad_image_localization_tools.py memory-add brand_term_memory.json --brand openai --term Codex --action preserve
+python3 -m pip install -r requirements.txt
+python3 scripts/ad_image_localization_tools.py cover-crop "$RUN/work/imagegen_raw/input_16x9.png" "$RUN/final/rabbit-social-networks_en_1200x628_20260623.jpg" --size 1200x628
+python3 scripts/ad_image_localization_tools.py manifest "$RUN/final" --output "$RUN/qa/manifest.json"
+python3 scripts/ad_image_localization_tools.py verify "$RUN/final"
+python3 scripts/ad_image_localization_tools.py contact-sheet "$RUN/final" "$RUN/qa/qa_contact_sheet.jpg"
+python3 scripts/ad_image_localization_tools.py flag-culture-aware "$RUN/final" rabbit-social-networks_ar_1200x628_20260623.jpg --destination "../Flagged by Culture-Aware QA" --market "GCC" --reason "Needs local cultural review"
+python3 scripts/ad_image_localization_tools.py memory-add brand_term_memory.json --brand openai --term Codex --action preserve
 ```
 
-建议在模型原生生成之后使用它，完成可复用的安全派生裁切、manifest、文件名/尺寸检查、视觉 QA 总览图、Culture-Aware QA 风险分拣，以及品牌/产品术语记忆维护。不要用辅助脚本生成主要的 `1:1`、`16:9`、`4:5` 或 `9:16` 版本；这些尺寸应由 `imagegen` 原生生成。脚本依赖 Pillow；如果不使用 Codex 自带 Python 运行时，本地可用 `python -m pip install -r requirements.txt` 安装依赖。
+建议在模型原生生成之后使用它，完成可复用的安全派生裁切、manifest、文件名/尺寸检查、视觉 QA 总览图、Culture-Aware QA 风险分拣，以及品牌/产品术语记忆维护。不要用辅助脚本生成主要的 `1:1`、`16:9`、`4:5` 或 `9:16` 版本；这些尺寸应由 `imagegen` 原生生成。脚本依赖 Pillow；如果不使用 Codex 自带 Python 运行时，本地可用 `python3 -m pip install -r requirements.txt` 安装依赖。
 
 本地辅助脚本测试：
 
 ```bash
-python -m pip install -r requirements.txt
-python -m unittest discover -s tests
-python scripts/ad_image_localization_tools.py verify examples/verified-delivery-pack
+python3 -m pip install -r requirements.txt
+python3 -m unittest discover -s tests
+python3 scripts/ad_image_localization_tools.py verify examples/verified-delivery-pack
 ```
 
 ## 安装
@@ -232,7 +232,7 @@ QA 阶段请同时执行 Culture-Aware QA。如果某个本地化变体可能需
 辅助脚本已经把这个逻辑做成可复用命令：
 
 ```bash
-python scripts/ad_image_localization_tools.py cover-crop 1920x1080.png 1200x628.jpg --size 1200x628
+python3 scripts/ad_image_localization_tools.py cover-crop 1920x1080.png 1200x628.jpg --size 1200x628
 ```
 
 ## 术语记忆

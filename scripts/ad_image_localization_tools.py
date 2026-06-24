@@ -39,7 +39,7 @@ def require_pillow() -> None:
     if Image is None:
         raise SystemExit(
             "This helper requires Pillow. In Codex, use the bundled Python runtime "
-            "when available; outside Codex, run: python -m pip install pillow"
+            "when available; outside Codex, run: python3 -m pip install pillow"
         )
 
 

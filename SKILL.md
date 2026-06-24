@@ -82,7 +82,7 @@ Use this skill to turn source image creatives into localized, platform-ready ass
    - Use cover-crop only when the target ratio is close to a model-generated common ratio and the model output has safe margins.
    - Use model-generated canvas extension or reflow instead of script resizing or blur padding when crop would remove important content.
    - Prefer the bundled helper for repeatable local operations:
-     `python scripts/ad_image_localization_tools.py cover-crop <input> <output> --size 1200x628`.
+     `python3 scripts/ad_image_localization_tools.py cover-crop <input> <output> --size 1200x628`.
 
 7. **Export**
    - Default run folder structure:
@@ -107,7 +107,7 @@ Use this skill to turn source image creatives into localized, platform-ready ass
    - Keep source files untouched.
    - Write a manifest when producing batches.
    - For batch folders, run helper commands against `final/` and write QA artifacts into `qa/`:
-     `python scripts/ad_image_localization_tools.py manifest <run-folder>/final --output <run-folder>/qa/manifest.json`.
+     `python3 scripts/ad_image_localization_tools.py manifest <run-folder>/final --output <run-folder>/qa/manifest.json`.
 
 8. **QA**
    - Check dimensions, language, readability, crop safety, missing objects, malformed text, visual artifacts, and brand/product preservation.
@@ -155,12 +155,12 @@ Use `scripts/ad_image_localization_tools.py` only for deterministic last-mile wo
 
 ```bash
 RUN=ad-localization-runs/rabbit-social-networks_20260623_1430
-python scripts/ad_image_localization_tools.py cover-crop "$RUN/work/imagegen_raw/input_16x9.png" "$RUN/final/rabbit-social-networks_en_1200x628_20260623.jpg" --size 1200x628
-python scripts/ad_image_localization_tools.py manifest "$RUN/final" --output "$RUN/qa/manifest.json"
-python scripts/ad_image_localization_tools.py verify "$RUN/final"
-python scripts/ad_image_localization_tools.py contact-sheet "$RUN/final" "$RUN/qa/qa_contact_sheet.jpg"
-python scripts/ad_image_localization_tools.py flag-culture-aware "$RUN/final" rabbit-social-networks_ar_1200x628_20260623.jpg --destination "../Flagged by Culture-Aware QA" --market "GCC" --reason "Animal/food symbolism may need local review"
-python scripts/ad_image_localization_tools.py memory-add brand_term_memory.json --brand openai --term Codex --action preserve
+python3 scripts/ad_image_localization_tools.py cover-crop "$RUN/work/imagegen_raw/input_16x9.png" "$RUN/final/rabbit-social-networks_en_1200x628_20260623.jpg" --size 1200x628
+python3 scripts/ad_image_localization_tools.py manifest "$RUN/final" --output "$RUN/qa/manifest.json"
+python3 scripts/ad_image_localization_tools.py verify "$RUN/final"
+python3 scripts/ad_image_localization_tools.py contact-sheet "$RUN/final" "$RUN/qa/qa_contact_sheet.jpg"
+python3 scripts/ad_image_localization_tools.py flag-culture-aware "$RUN/final" rabbit-social-networks_ar_1200x628_20260623.jpg --destination "../Flagged by Culture-Aware QA" --market "GCC" --reason "Animal/food symbolism may need local review"
+python3 scripts/ad_image_localization_tools.py memory-add brand_term_memory.json --brand openai --term Codex --action preserve
 ```
 
 The helper expects Pillow. In Codex desktop environments, use the bundled Python runtime when available; outside Codex, install Pillow locally if needed.
