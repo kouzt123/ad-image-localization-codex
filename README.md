@@ -26,7 +26,7 @@ Future work may include a separate high-throughput skill based on the Nano Banan
 ## What It Does
 
 - Translates visible text inside images into target languages.
-- Uses RTL-aware localization by default for Arabic and other RTL languages, with copy-only fallback when QA finds the adapted layout weaker.
+- Uses strict RTL-aware localization by default for Arabic and other RTL languages, with copy-only fallback only when QA finds the true RTL layout weaker.
 - Preserves brand names, product names, logos, subjects, and visual hierarchy.
 - Adapts creatives into common ad/social sizes:
   - `1200x1200`
@@ -76,18 +76,20 @@ Most image translation projects focus on OCR, text removal, translation, and re-
 
 ![Fictional ad localization demos](./examples/demo-localization-grid.png)
 
-For Arabic and other RTL languages, the skill first attempts RTL-aware layout adaptation, and falls back to copy-only localization if QA determines the adapted layout is weaker.
+For Arabic and other RTL languages, the skill first attempts true RTL-aware layout adaptation, and falls back to copy-only localization if QA determines the adapted layout is weaker.
 
 ## RTL-aware Localization
 
-For Arabic and other right-to-left languages, the skill uses a quality-first fallback strategy: try RTL-aware localization first, then fall back to copy-only localization when the adapted layout is less natural, less readable, or less brand-safe.
+For Arabic and other right-to-left languages, the skill uses a quality-first fallback strategy: create a true RTL-aware layout first, then fall back to copy-only localization only when the adapted layout is less natural, less readable, or less brand-safe.
 
 ![RTL-aware localization QA fallback demo](./examples/rtl-aware-localization.png)
 
-- **Option A: RTL-aware enabled (default for RTL languages)**: adapts layout for right-to-left reading when beneficial, including text direction, alignment, CTA flow, local text grouping, and limited UI or dialogue layout adjustments.
+- **Option A: RTL-aware enabled (default for RTL languages)**: right-aligns primary RTL copy, makes the information flow start from the right, adapts CTA placement/direction, and adjusts local UI, dialogue, product, or subject relationships when needed for right-to-left reading.
 - **Option B: RTL-aware disabled / fallback**: translates visible copy only and preserves the original layout structure when layout adaptation reduces quality.
 
-Use Option A by default for Arabic and other RTL languages. Use Option B when layout adaptation makes the creative feel unbalanced, damages brand recognition, or produces weaker text layout. RTL-aware localization is not a request to mirror the entire design, flip logos, or move brand identity without a clear visual reason.
+Use Option A by default for Arabic and other RTL languages. Use Option B when a true RTL-aware layout makes the creative feel unbalanced, damages brand recognition, or produces weaker text layout. RTL-aware localization is not a request to mirror the entire design, flip logos, or move brand identity without a clear visual reason.
+
+RTL-aware QA should reject outputs where the main Arabic/RTL headline, body, or CTA is left-aligned or merely centered without a clear reason; where the visual reading path still starts on the left; or where Arabic + Latin brand/product text has awkward visual order. If the final output keeps a mostly LTR composition, note why and state whether it is the copy-only fallback.
 
 ## Culture-Aware QA
 
@@ -177,7 +179,7 @@ Other examples:
 Localize this poster into Arabic and Vietnamese. Preserve the product name in English and make sure the 1200x628 output does not stretch the text.
 ```
 
-For Arabic, RTL-aware localization is attempted by default; if QA finds the adapted layout weaker, use copy-only localization and preserve the original overall layout.
+For Arabic, create a true RTL-aware layout first: right-aligned Arabic copy, right-side information priority, and RTL CTA flow. If QA finds that true RTL layout weaker, use copy-only localization and preserve the original overall layout.
 
 During QA, run Culture-Aware QA for the target markets. If a localized variant may need local review, move its affected sizes into `Flagged by Culture-Aware QA/` and tell me why.
 
@@ -195,7 +197,7 @@ Remember this terminology rule for Example Brand: keep "PixelPass" in English fo
 Use ad-image-localization to localize this game ad into German, Spanish, Japanese, and Arabic. Preserve the game title, translate all character traits and UI labels, and export 1200x1200, 1920x1080, 1080x1350, 1080x1920, and 1200x628.
 ```
 
-For Arabic and other RTL languages, the skill first attempts RTL-aware layout adaptation, and falls back to copy-only localization if QA determines the adapted layout is weaker.
+For Arabic and other RTL languages, the skill first attempts true RTL-aware layout adaptation with right-aligned primary copy and right-to-left reading flow, then falls back to copy-only localization if QA determines the adapted layout is weaker.
 
 ### Ecommerce Product Image
 
